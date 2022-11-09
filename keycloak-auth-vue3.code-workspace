@@ -1,0 +1,78 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {},
+	"launch": {
+		"configurations": [
+			{
+				"type": "chrome",
+				"request": "launch",
+				"name": "launch:chrome",
+				"url": "http://localhost:8833",
+				"webRoot": "${workspaceFolder}/code/src",
+				"sourceMaps": true,
+				"sourceMapPathOverrides": {
+					"src/*": "${webRoot}/*",
+				},
+				"skipFiles": [
+					"<node_internals>/**/*.js",
+					"**/<node_internals>/**/*.js",
+					"**/node_modules/**/*.js",
+					"**/runtime.js",
+					"**/polyfills.js",
+					"**/vendor.js",
+					"**/analytics.js"
+				],
+				"preLaunchTask": "serve"
+			},
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+			{
+				"label": "npm:install",
+				"type": "shell",
+				"command": "npm install",
+				"linux": {
+					"command": "if [ -d ${workspaceFolder}/node_modules ]; then npm install fi"
+				},
+				"windows": {
+					"command": "cmd",
+					"args": [
+						"/C",
+						"if not exist ${workspaceFolder}/node_modules  npm install"
+					],
+				},
+				"options": {
+					"cwd": "${workspaceFolder}"
+				},
+			},
+      {
+				"label": "serve",
+				"type": "shell",
+				"command": "npm run dev",
+				"options": {
+					"cwd": "${workspaceFolder}"
+				},
+				"isBackground": true,
+				"dependsOn": [
+					"npm:install"
+				],
+				"problemMatcher": [
+					{
+						"base": "$tsc-watch",
+						"background": {
+							"activeOnStart": true,
+							"beginsPattern": "VITE v",
+							"endsPattern": "ready in"
+						}
+					}
+				]
+			},
+    ]
+  }
+}
